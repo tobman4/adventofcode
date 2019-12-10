@@ -15,14 +15,26 @@ int main(void) {
    
    //load file into array
    
-   std::ifstream module_file;
-   programfile_file.open("../modules");
-   while(std::getline(module_file,line)) {
-   
+   std::ifstream programfile_file;
+   programfile_file.open("../program");
+   while(std::getline(programfile_file,line)) {
+      raw += line;
    }
    
+   std::cout << raw << std::endl;
    
    for(int i = 0; i >= 100; i+=4) {
 	
-     }
+   }
+   
+}
+
+
+
+int* test(std::string data) {
+   std::cout << data << std::endl;
+   int arr[2] = {1,2};
+   
+   
+   return arr;
 }
