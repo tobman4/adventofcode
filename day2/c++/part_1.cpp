@@ -8,6 +8,7 @@
  * ebx = 1 - add ebx+1,ebx+2 and store ebx+3
  * ebx = 2 - multiplie ebx+1,ebx+2 and store ebx+3
  * 99 - progam end
+ *
 */
 
 
