@@ -57,19 +57,22 @@ int main(void) {
     * slow
     * need fix
    */
+   
    for(int i = 0; i <= 99; i++) {
-      for(int j = 0; j <= 99; j++) {
-	 cpu.write_address(1,i,true);
-	 cpu.write_address(2,j,true);
+      for(int j = 0; j <= 99; j++) {  
 	 cpu.reset();
-	 std::cout << cpu.read_address(1) << std::endl;
+	 cpu.write_address(1,i);
+	 cpu.write_address(2,j);
+	 cpu.start();
 	 while(cpu.active()) {
 	    cpu.step();
 	 }
-	 //int a = cpu.read_address(0);
-	 std::cout << cpu.read_address(0) << std::endl;
-	 
-      }
+	 int val = cpu.read_address(0);
+	 if(val == 19690720) {     
+	 std::cout << i << " " << j << " = " << val << std::endl;
+	 }
+      }      
    }
+   
    return 0;
 }
