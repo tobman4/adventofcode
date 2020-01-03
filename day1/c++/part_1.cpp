@@ -26,4 +26,6 @@ int main(void) {
    }
    std::cout << "Part 1: " << weigth_tot_1 << std::endl;
    std::cout << "Part 2: " << weigth_tot_2 << std::endl;
+
+   return 0;
 }
