@@ -11,7 +11,7 @@ class computer {
    std::vector<int> memory,memory_pure;
    int eax,ebx,ecx,edx,ebp;
    bool halt = false;
-   bool runing = true;
+   bool runing = false;
    bool err = false;
    
  public:
@@ -28,7 +28,7 @@ class computer {
    
    int read_address(int addr,bool pure = false) {
       if(addr < 0 || addr >= memory.size()) { // test if in range of pure memory?
-	   return ; // out of range
+	   return -1; // out of range
       }
       if(pure) {
 	 return memory_pure[addr];
@@ -51,7 +51,16 @@ class computer {
       
    }
    
+   void start() {
+      runing = true;
+   }   
+   
    void reset() {
+      eax = 0;
+      ebx = 0;
+      ecx = 0;
+      edx = 0;
+      ebp = 0;
       runing = false;
       halt = false;
       err = false;
