@@ -53,6 +53,8 @@ class computer {
    }
    
    void start() {
+      halt = false;
+      err = false;
       runing = true;
    }   
    
@@ -72,35 +74,93 @@ class computer {
       
    }
    
-   
+   int _get_opcode(int code) {
+      std::string str = std::to_string(code);
+      while(str.length() < 5) {
+            str = "0" + str;
+      }
+      std::string ret = "";
+      ret += str.at(str.length()-2);
+      ret += str.at(str.length()-1);
+
+      return std::stoi(ret);
+   }
+
    void get_command() {
       
       
       eax = memory[ebp]; // opcode
       
-      ///detect mode
       std::string str = std::to_string(eax);
-      /*char* arr = new char [str.length()];
-      for(int i = str.length()-1; i >= 0; i--) {
-         arr[i] = str[i];         
-      */}
-      //////
-
-      bool a_mode = false;
-      bool b_mode = false;
-      bool adr_mode = false;
-
-      if(str.length() <= 2) {
-         
+      while(str.length() < 5) {
+            str = "0" + str;
       }
 
+      bool b_mode = false;
+      bool c_mode = false;
+      bool adr_mode = false;
+      
+      std::string opcode = "";
+      opcode += str.at(str.length()-2);
+      opcode += str.at(str.length()-1);
+      str.pop_back();
+      str.pop_back();
+      // std::cout << str << "-" << opcode << std::endl;
+
+         
+      for(int i = 2; i >= 0; i--) { // A0 B1 C2
+         bool mode = false;
+         if(i < str.length()) {
+            mode = (str[i] == "1"[0]);
+         } else {
+            std::cout << "ERROR" << std::endl;
+         }
+         switch(i) {
+            case 0:
+               // std::cout << "A: " << mode << std::endl;
+               adr_mode = mode;
+               break;
+            case 1:
+               // std::cout << "B: " << mode << std::endl;
+               c_mode = mode;
+               break;
+            case 2:
+               // std::cout << "C: " << mode << std::endl;
+               b_mode = mode;
+               break;
+         }
+      }
+      eax = std::stoi(opcode);
+      
+      
 
       /////
-
-      ebx = memory[ebp+1]; // A
-      ecx = memory[ebp+2]; // B
       
-      edx = memory[ebp+3]; // TARGET MEM cell
+      if(b_mode) {
+         ebx = memory[ebp+1]; // A
+      } else {
+         ebx = memory[memory[ebp+1]];
+      }
+
+      // std::cout << "ebx(" << memory[ebp+1] << ") = " << ebx << std::endl;
+
+      if(c_mode) {
+         ecx = memory[ebp+2]; // B
+      } else {
+         ecx = memory[memory[ebp+2]];
+      }
+      
+      // std::cout << "ecx(" << memory[ebp+2] << ") = " << ecx << std::endl;
+
+
+      if(adr_mode) {
+         edx = ebp+3; // TARGET MEM cell
+      } else {
+         edx = memory[ebp+3];
+      }
+
+      // std::cout << "edx(" << memory[ebp+3] << ") = " << edx << std::endl;
+
    }
 
    void stop() {
@@ -128,10 +188,13 @@ class computer {
       
       switch(eax) {
        case 1:
-	      memory[edx] = memory[ebx] + memory[ecx];
+
+	      memory[edx] = ebx+ecx;
+         //memory[edx] = memory[ebx] + memory[ecx];
 	      break;
        case 2:
-	      memory[edx] = memory[ebx] * memory[ecx];
+         memory[edx] = ebx*ecx;
+	      //memory[edx] = memory[ebx] * memory[ecx];
 	      break;
       case 3:
          int in;
@@ -145,6 +208,7 @@ class computer {
          steps = 2;
          break;
        default:
+         dump_memory();
 	      std::cout << "ERROR: got opcode: " << eax << std::endl;
 	      err = true;
        case 99:
@@ -162,22 +226,24 @@ class computer {
    }
    
    void dump_memory() {
+      std::cout << "=============memory dump============" << std::endl;
       for(int i = 0; i < memory.size(); i++) {      
-	 switch(memory[i]) {
-	  case 1:
-	  case 2:
-	    std::cout << i << ": " << memory[i]  << " " << memory[i+1] << " "  << memory[i+2] << " " << memory[i+3]  << std::endl;
-	    i += 3;
-       break;
-     case 3:
-     case 4:
-      std::cout << i << ": " << memory[i]  << " " << memory[i+1] << std::endl;
-      i += 1;
-      break;
-	  default:
-	    std::cout << i << ": " << memory[i] << std::endl;
-	    break;
-	  }
+	   switch(_get_opcode(memory[i])) {
+	      case 1:
+	      case 2:
+	         std::cout << i << ": " << memory[i]  << " " << memory[i+1] << " "  << memory[i+2] << " " << memory[i+3]  << std::endl;
+	         i += 3;
+            break;
+         case 3:
+         case 4:
+            std::cout << i << ": " << memory[i]  << " " << memory[i+1] << std::endl;
+            i += 1;
+            break;
+	      default:
+	         std::cout << i << ": " << memory[i] << std::endl;
+	         break;
+	      }
       }
+   std::cout << "====================================" << std::endl;
    }
 };

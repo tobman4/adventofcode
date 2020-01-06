@@ -44,7 +44,7 @@ int main(void) {
    //load file into array
    
    std::ifstream programfile_file;
-   programfile_file.open("../program");
+   programfile_file.open("../program_test");
    //programfile_file.open("../dbg");
    while(std::getline(programfile_file,line)) {
       raw += line;
@@ -53,10 +53,12 @@ int main(void) {
    
    computer cpu = computer(program);
    
-	cpu.start();
+	cpu.dump_memory();
+   cpu.start();
 	while(cpu.active()) {
 	    cpu.step();
    }
+   cpu.dump_memory();
 
    return 0;
 }
