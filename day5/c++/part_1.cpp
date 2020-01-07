@@ -20,21 +20,21 @@
 
 
 
-std::vector<int> test(std::string data) {
+std::vector<float> test(std::string data) {
    
    
-   std::vector<int> out;
+   std::vector<float> out;
    std::string nr = "0";
    
    for(int i = 0; i <= data.length(); i++) {
       if(data[i] == ',') {
-	      out.push_back(stoi(nr));
-	      nr = "0";
+	      out.push_back(stof(nr));
+	      nr = "";
       } else {
 	      nr += data[i];
       }
    }
-   out.push_back(stoi(nr));
+   out.push_back(stof(nr));
    return out;
 }
 
@@ -44,21 +44,20 @@ int main(void) {
    //load file into array
    
    std::ifstream programfile_file;
-   programfile_file.open("../program_test");
+   programfile_file.open("../program");
    //programfile_file.open("../dbg");
    while(std::getline(programfile_file,line)) {
       raw += line;
    }
-   std::vector<int> program = test(raw);
+   std::vector<float> program = test(raw);
    
    computer cpu = computer(program);
    
-	cpu.dump_memory();
+   cpu.dump_memory();
    cpu.start();
 	while(cpu.active()) {
 	    cpu.step();
    }
-   cpu.dump_memory();
-
+   std::cout << "out: " << cpu.read_address(0) << std::endl;
    return 0;
 }
