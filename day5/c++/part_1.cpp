@@ -53,7 +53,6 @@ int main(void) {
    
    computer cpu = computer(program);
    
-   cpu.dump_memory();
    cpu.start();
 	while(cpu.active()) {
 	    cpu.step();

@@ -15,6 +15,23 @@ class computer {
    bool  halt = false;
    bool  runing = false;
    bool  err = false;
+
+   void jmp(int adr) {
+      std::cout << "jumping to " << adr << std::endl;
+      ebp = adr;
+   }
+
+   int get_opcode(int code) { // no opcode < 0 i think... hope
+      std::string str = std::to_string(code);
+      while(str.length() < 5) {
+            str = "0" + str;
+      }
+      std::string ret = "";
+      ret += str.at(str.length()-2);
+      ret += str.at(str.length()-1);
+
+      return std::stoi(ret);
+   }
    
  public:
 
@@ -78,17 +95,7 @@ class computer {
       
    }
    
-   int _get_opcode(int code) { // no opcode < 0 i think... hope
-      std::string str = std::to_string(code);
-      while(str.length() < 5) {
-            str = "0" + str;
-      }
-      std::string ret = "";
-      ret += str.at(str.length()-2);
-      ret += str.at(str.length()-1);
-
-      return std::stoi(ret);
-   }
+   
 
    void get_command() {
       if(DBG >= 1) {
@@ -228,9 +235,22 @@ class computer {
       case 4:
          std::cout << "out[" << ebp << "]: " << ebx << std::endl;
          steps = 2;
-         dump_memory();
          break;
-       default:
+      case 5:
+      case 6:
+         if(ebx != 0 && int(eax) == 5) {
+            jmp(ecx);
+            steps = 0;
+         } else if(ebx == 0 && int(eax) == 6) {
+            jmp(ecx);
+            steps = 0;
+         }
+         
+         break;
+      case 7:
+         std::cout << "jaz" << std::endl;
+         break;
+      default:
          dump_memory();
 	      std::cout << "ERROR: got opcode(" << ebp << "): " << eax << std::endl;
 	      err = true;
@@ -270,7 +290,7 @@ class computer {
          std::cout << " : ";
       }
 
-      switch(_get_opcode(memory[i])) {
+      switch(get_opcode(memory[i])) {
 	      case 1:
 	      case 2:
 	         std::cout << memory[i]  << " " << memory[i+1] << " "  << memory[i+2] << " " << memory[i+3]  << std::endl;
