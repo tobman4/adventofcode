@@ -57,6 +57,5 @@ int main(void) {
 	while(cpu.active()) {
 	    cpu.step();
    }
-   std::cout << "out: " << cpu.read_address(0) << std::endl;
    return 0;
 }

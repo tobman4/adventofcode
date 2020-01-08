@@ -17,7 +17,7 @@ class computer {
    bool  err = false;
 
    void jmp(int adr) {
-      std::cout << "jumping to " << adr << std::endl;
+      // std::cout << "jumping to " << adr << std::endl;
       ebp = adr;
    }
 
@@ -233,7 +233,7 @@ class computer {
          steps = 2;
          break;
       case 4:
-         std::cout << "out[" << ebp << "]: " << ebx << std::endl;
+         std::cout << std::fixed << "out[" << ebp << "]: " << ebx << std::defaultfloat << std::endl;
          steps = 2;
          break;
       case 5:
@@ -244,11 +244,16 @@ class computer {
          } else if(ebx == 0 && int(eax) == 6) {
             jmp(ecx);
             steps = 0;
+         } else {
+            steps = 3;
          }
          
          break;
       case 7:
-         std::cout << "jaz" << std::endl;
+         memory[edx] = (int(ebx < ecx)) ? 1 : 0;
+         break;
+      case 8:
+         memory[edx] = (int(ebx == ecx)) ? 1 : 0;
          break;
       default:
          dump_memory();
