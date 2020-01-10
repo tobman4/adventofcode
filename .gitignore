@@ -7,3 +7,4 @@ dump
 node_modules/*
 .vscode/launch.json
 .vscode/c_cpp_properties.json
+day6/ts/node_modules/*
