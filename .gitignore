@@ -3,5 +3,6 @@ run
 *~
 dump
 *test
+node_modules/*
 .vscode/launch.json
 .vscode/c_cpp_properties.json
