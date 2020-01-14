@@ -4,7 +4,11 @@ run.bat
 *~
 dump
 *test
+<<<<<<< HEAD
+ts/*.js
+=======
 node_modules/*
+>>>>>>> 625cecc8d4e2bab7cb8f004b9b7d9600e93ae63b
 .vscode/launch.json
 .vscode/c_cpp_properties.json
 day6/ts/node_modules/*
