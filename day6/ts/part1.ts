@@ -30,7 +30,7 @@ class planet {
     }
 }
 
-const raw_data : string = fs.readFileSync("../map", "utf8");
+const raw_data : string = fs.readFileSync("../map_test", "utf8");
 
 let orbits : string[] = raw_data.split("\r\n");
 let planets_raw : string[] = [];
@@ -78,6 +78,7 @@ function length_to_com(mark : planet) : planet[] {
         path.push(curr);
         curr = curr.orbit;
     }
+    path.push(curr);
     return path;
 }
 
@@ -92,6 +93,26 @@ console.log("Part 1");
 console.log("----------------------------------");
 let x = 0;
 planets_raw.forEach(el => {
-    x += length_to_com(planets[el]).length;
+    x += length_to_com(planets[el]).length - 1;
 });
 console.log(x);
+
+console.log("==================================");
+console.log("Part 2");
+console.log("----------------------------------");
+let p1 = length_to_com(planets["YOU"]);
+let p2 = length_to_com(planets["SAN"]);
+
+try {
+    p1.forEach(el => {
+        if(p2.indexOf(el) != -1) {
+            console.log("Meet at " + el.me);
+            console.log(p2.slice(p2.indexOf(el)));
+            throw new Error("BREAK");
+        }
+    });
+} catch(err) {
+    if(err.message != "BREAK") {
+        console.log(err);
+    }
+}
