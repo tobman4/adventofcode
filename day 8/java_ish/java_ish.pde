@@ -89,27 +89,56 @@ void draw() {
     
   }
   
-  
-  //if(true) {
-  //  noLoop();
-  //  return;
-  //}
+  int layerd[][] = new int[H][W]; // create output array
+  for(int i = 0; i < layerd.length; i++) {
+      for(int j = 0; j < layerd[i].length; j++) {
+        layerd[i][j] = 2; // fill whit transparent
+      }
+    }
 
-  // draw to screen
-  loadPixels();
+
   for(int a = 0; a < layers.length; a++) {
-    for(int i = 0; i < layers[a].length; i++) {
-      for(int j = 0; j < layers[a][i].length; j++) {
-        pixels[(width*i) + (j+W*a)] = color_map[layers[a][i][j]];
+    for(int i = 0; i < layerd.length; i++) {
+      for(int j = 0; j < layerd[i].length; j++) {
+        if(layerd[i][j] == 2) { // if transparent set to pixel
+          layerd[i][j] = layers[a][i][j];
+        }
       }
     }
   }
+
+
+  // draw to screen
+  loadPixels();
+
+  /*
+  #############################################################
+  # set size(2500,100) if u want to se all and uncoment under #
+  # v   vv   vv   vv   vv   vv   vv   vv   vv   vv   vv   vv  #
+  #############################################################
+  */
+
+
+  // for(int a = 0; a < layers.length; a++) {
+  //   for(int i = 0; i < layers[a].length; i++) {
+  //     for(int j = 0; j < layers[a][i].length; j++) {
+  //       pixels[(width*i) + (j+W*a)] = color_map[layers[a][i][j]];
+  //     }
+  //   }
+  // }
+
+  for(int i = 0; i < layerd.length; i++) {
+      for(int j = 0; j < layerd[i].length; j++) {
+        pixels[(width*(i+H)) + j] = color_map[layerd[i][j]];
+      }
+    }
+
   updatePixels();
   noLoop();
   println("draw end");
 }
 
 public void settings() {
-  size(2500, 50);
+  size(100, 100);
   pixelDensity(1);
 }
