@@ -4,6 +4,7 @@ run.bat
 *~
 dump
 *test
+*.exe
 */ts/*.js
 node_modules/*
 .vscode/launch.json
