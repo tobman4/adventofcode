@@ -8,7 +8,6 @@ import (
 	"io/ioutil"
 	"strings"
 	"strconv"
-	"reflect"
 	"time"
 	"regexp"
 	"fmt"
@@ -34,25 +33,32 @@ func main() {
 	var data string;
 
 	fmt.Println("<START>");
-	data = get_data("../data_test");
+	data = get_data("../data");
 	split_pure := strings.Split(data,"\n");
 	
 	path1 := strings.Split(split_pure[0],",");
 	path2 := strings.Split(split_pure[1],",");
 
-	fmt.Println(path1);
-	fmt.Println(path2);
-
 	pos1 := find_all(path1);
 	pos2 := find_all(path2);
 
-	fmt.Println(reflect.ValueOf(pos1[0]));
+	var best_dist int = 9999999;
 
 	for i := 0; i < len(pos1); i++ {
 		if itemExists(pos2, pos1[i]) {
-			fmt.Println("meet @ ", pos1[i]);
+			dist := anti_neg(pos1[i][0]) + anti_neg(pos1[i][1]);
+			
+			
+			if dist < 0 {
+				dist = dist - dist - dist;
+			}
+
+			if dist < best_dist && dist != 0 {
+				best_dist = dist;
+			}
 		}
 	}
+	fmt.Println("best dist = ", best_dist);
 	fmt.Println((time.Now()).Sub(start));
 }
 /////////////////////////////////////////////////////////////////////
@@ -65,11 +71,19 @@ func itemExists(arr [][]int, pos []int) bool {
 	return false;
 }
 
+func anti_neg(data int) int {
+	if data < 0 {
+		return data - data - data;
+	} else {
+		return data;
+	}
+}
+
 func find_all(path []string) [][]int {
 	var X int = 0;
 	var Y int = 0;
 	var out [][]int;
-	r, _ := regexp.Compile("(?P<dir>U|D|L|R)(?P<length>[0-9]{1,})");
+	r,_ := regexp.Compile("(?P<dir>U|D|L|R)(?P<length>[0-9]{1,})");
 	
 	for i := 0; i < len(path); i++ {
 		var Xm int = 0;
