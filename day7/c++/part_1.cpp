@@ -6,23 +6,19 @@
 #include<math.h>
 #include<vector>
 
-/*
- * ebx = 1 - add ebx+1,ebx+2 and store ebx+3
- * ebx = 2 - multiplie ebx+1,ebx+2 and store ebx+3
- * 99 - progam end
- * 
- * 
- * Part 2:
- * c++ is fast so i wil try brute-force
-*/
+int phase = 0; // 0-4
+float last;
 
-int A = 0;
-int B = 0;
 bool side = false;
 
 float IO::get_data(void) {
    side = !side;
-   return side ? A : B;
+   return side ? phase : last;
+}
+
+void IO::out_data(float data, int addr) {
+   std::cout << "the best has changed from " << out << " to " << data << ". using "<< A << "-" << B << std::endl;
+   last = data;
 }
 
 std::vector<float> test(std::string data) {
@@ -58,17 +54,11 @@ int main(void) {
    
    computer cpu = computer(program);
    
-   for(int i = 0; i < 10; i++) {
-      for(int j = 0; j < 10; j++) {
-         A = i;
-         B = j;
-         cpu.start();
-         while(cpu.active()) {
-            cpu.step();
-         }
-         cpu.reset();
-      }
-   }
+
+   
+
+
+   std::cout << "best thrust is: " << out << std::endl;
    return 0;
 
 }

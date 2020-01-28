@@ -8,31 +8,50 @@
 #include<vector>
 
 class IO {
+   /**
+    * 
+    * class to handel IO
+    * 
+    * when program needs input it calls 
+    * IO::get_input that then calls IO::get_data
+    * what get data return is used as input
+    * ############################################## 
+    *
+    * when the program needs to send data it calls IO::output_data that then calls IO::out_data
+    * 
+    * 
+    */
    private:
 
       float last_ret;
 
-      void send_data(void);
-      float out_data(float data,int addr);
+      float get_data(void);
+      void out_data(float data,int addr);
    public:
 
-      void out_data(float data, int addr = -1) {
-         // out_data(data,addr);
-         return;
-      }
 
       float get_input() {
          float ret;
          ret = get_data();
          return ret;
       };
+
+      void output_data(float data, int addr) {
+         
+         //std::cout << "out[" << addr << "]: ";
+
+         out_data(data,addr);
+         //std::cout << std::endl;
+
+         return;
+      }
 };
 
-void IO::send_data(float data,int addr) {
-   std::cout << std::fixed << "out[" << addr << "]: " << data << std::defaultfloat << std::endl;
-}
+// void IO::out_data(float data, int addr) {
+//    std::cout << data;
+// }
 
-// float input::get_data(void) {
+// float IO::get_data(void) {
 //    float in;
 //    std::cout << "enter float: ";
 //    std::cin >> in;
@@ -85,6 +104,8 @@ class computer {
    bool active() {
       return (!halt && !err) && runing;
    }
+
+   bool error() {return err;}
    
    float read_address(int addr,bool pure = false) {
       if(addr < 0 || addr >= memory.size()) { // test if in range of pure memory?
@@ -280,7 +301,7 @@ class computer {
          steps = 2;
          break;
       case 4:
-         interface.out_data(ebx,ebp);
+         interface.output_data(ebx,ebp);
          steps = 2;
          break;
       case 5:
