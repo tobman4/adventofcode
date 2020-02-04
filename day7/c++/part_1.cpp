@@ -6,19 +6,55 @@
 #include<math.h>
 #include<vector>
 
-int phase = 0; // 0-4
-float last;
+int phase[5] = {0,1,2,3,4}; // 0-4
+int phase_index = 0;
+float last = 0;
+float best = -1;
 
 bool side = false;
 
 float IO::get_data(void) {
    side = !side;
-   return side ? phase : last;
+   return side ? phase[phase_index] : last;
 }
 
 void IO::out_data(float data, int addr) {
-   std::cout << "the best has changed from " << out << " to " << data << ". using "<< A << "-" << B << std::endl;
+   std::cout << "out form " << phase_index << " = " << data << std::endl;
    last = data;
+}
+
+void swap(int *arr,int arr_length) {
+
+   int dump[arr_length][arr_length];
+
+
+
+   for(int i = 0; i < arr_length; i++) {
+      int hold = arr[0];
+      arr[0] = arr[i];
+      arr[i] = hold;
+      for(int j = 0; j < arr_length; j++) {
+         dump[i][j] = arr[j];
+      }
+      hold = arr[0];
+      arr[0] = arr[i];
+      arr[i] = hold;
+   }
+
+
+
+
+
+   //////////////////////////////////////////////////
+   //BLACK BOX                                     //
+   for(int i = 0; i < arr_length; i++) {           //
+      for(int j = 0; j < arr_length; j++) {        //
+         std::cout << dump[i][j];                  //
+      }                                            //
+      std::cout << std::endl;                      //
+   }                                               //
+   //                                              //
+   /////////////////////////////////////////////////
 }
 
 std::vector<float> test(std::string data) {
@@ -45,20 +81,26 @@ int main(void) {
    //load file into array
    
    std::ifstream programfile_file;
-   programfile_file.open("../program");
+   programfile_file.open("../program_test");
    //programfile_file.open("../dbg");
    while(std::getline(programfile_file,line)) {
       raw += line;
    }
    std::vector<float> program = test(raw);
-   
-   computer cpu = computer(program);
-   
+   int size = sizeof(phase)/sizeof(phase[0]);
 
-   
+   swap(phase,sizeof(phase)/sizeof(phase[0]));
 
+   // computer cpu = computer(program);
+   // for(int i = 0; i < sizeof(phase)/sizeof(phase[0]); i++) {
+   //    phase_index = i;
 
-   std::cout << "best thrust is: " << out << std::endl;
+   //    cpu.reset();
+   //    cpu.start();
+   //    while(cpu.active()) {
+   //       cpu.step();
+   //    }
+   // }
    return 0;
 
 }
