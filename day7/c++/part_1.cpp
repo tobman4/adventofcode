@@ -27,8 +27,6 @@ void swap(int *arr,int arr_length) {
 
    int dump[arr_length][arr_length];
 
-
-
    for(int i = 0; i < arr_length; i++) {
       int hold = arr[0];
       arr[0] = arr[i];
@@ -40,11 +38,6 @@ void swap(int *arr,int arr_length) {
       arr[0] = arr[i];
       arr[i] = hold;
    }
-
-
-
-
-
    //////////////////////////////////////////////////
    //BLACK BOX                                     //
    for(int i = 0; i < arr_length; i++) {           //
@@ -55,6 +48,32 @@ void swap(int *arr,int arr_length) {
    }                                               //
    //                                              //
    /////////////////////////////////////////////////
+}
+
+void shift(int *arr,int arr_length) {
+   int dump[arr_length][arr_length];
+
+   for(int i = 0; i < arr_length; i++) {
+      int saved = arr[arr_length-1];
+      for(int j = arr_length-1; j > 0; j--) {
+         arr[j] = arr[j-1];
+      }
+      arr[0] = saved;
+      for(int j = 0; j < arr_length; j++) {
+         dump[i][j] = arr[j];
+      }
+   }
+   //////////////////////////////////////////////////
+   //BLACK BOX                                     //
+   for(int i = 0; i < arr_length; i++) {           //
+      for(int j = 0; j < arr_length; j++) {        //
+         std::cout << dump[i][j];                  //
+      }                                            //
+      std::cout << std::endl;                      //
+   }                                               //
+   //                                              //
+   /////////////////////////////////////////////////   
+   return;
 }
 
 std::vector<float> test(std::string data) {
@@ -89,7 +108,7 @@ int main(void) {
    std::vector<float> program = test(raw);
    int size = sizeof(phase)/sizeof(phase[0]);
 
-   swap(phase,sizeof(phase)/sizeof(phase[0]));
+   shift(phase,sizeof(phase)/sizeof(phase[0]));
 
    // computer cpu = computer(program);
    // for(int i = 0; i < sizeof(phase)/sizeof(phase[0]); i++) {
