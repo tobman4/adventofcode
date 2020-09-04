@@ -82,15 +82,6 @@ class computer {
    }
    
    void process_command() {
-      /*
-       * x86 reg
-       * 
-       * eax - opcode
-       * 
-       * 1  - add ebx to ecx and write to edx
-       * 2  - multiply ebx to ecx and write to edx
-       * 99 - halt
-      */
       
       switch(eax) {
        case 1:
